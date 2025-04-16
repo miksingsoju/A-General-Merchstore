@@ -7,13 +7,19 @@ from .models import *
 
 def product_list(request):
     products = Product.objects.all()
+    productTypes = ProductType.objects.all()
     ctx = {
-        'products':products
+        'products':products,
+        'productTypes':productTypes
     }
     return render(request,'product_list.html',ctx)
 
-def product_detail(request, num):
-    pass
+def product_detail(request, num=1):
+    product = Product.objects.get(pk=num)
+    ctx = {
+        'product':product,
+    }
+    return render(request,'product_detail.html',ctx)
 
 def product_create(request):
     pass
