@@ -12,9 +12,6 @@ class ProductType(models.Model):
     class Meta:
         ordering = ["name"]
 
-    def get_absolute_url(self):
-        return reverse('store:productType-detail', args=[self.id])
-    
     def __str__(self):
         return self.name
 
@@ -30,7 +27,7 @@ class Product (models.Model):
         on_delete=models.CASCADE,
     )
     description = models.TextField()
-    price = models.DecimalField(decimal_places=2)
+    price = models.DecimalField(max_digits=99, decimal_places=2)
     stock = models.PositiveBigIntegerField(default=0)
 
     class Status(models.TextChoices):
@@ -46,14 +43,22 @@ class Product (models.Model):
         default=Status.AVAILABLE,
     )
 
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('store:product_detail', args=[self.id])
+
 class Transaction (models.Model):
     buyer = models.ForeignKey(
         Profile,
-        on_delete = models.SET_NULL
+        on_delete = models.SET_NULL,
+        null=True
     )
     product = models.ForeignKey(
         Product,
-        on_delete = models.SET_NULL
+        on_delete = models.SET_NULL,
+        null = True
     )
     # TODO: I might need to do something like add conditions?
 
