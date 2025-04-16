@@ -29,13 +29,12 @@ class Product (models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=99, decimal_places=2)
     stock = models.PositiveBigIntegerField(default=0)
+    image = models.ImageField(upload_to='product_images/', null=True)
 
     class Status(models.TextChoices):
         AVAILABLE = 'available', 'Available'
         ON_SALE = 'on_sale', 'On sale'
         OUT_OF_STOCK = 'out_of_stock', 'Out of stock'
-
-    # TODO: I might need to do something like add conditions?
 
     status = models.CharField(
         max_length=20,

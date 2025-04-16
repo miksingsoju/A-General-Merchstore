@@ -12,6 +12,7 @@
         font-family:'Times New Roman', Times, serif;
         padding: 0;
         margin: 0 5vw 0 5vw;
+        color: black;
     }
 
     p {
@@ -22,32 +23,44 @@
         text-align: center;
         padding: 0px;
         margin: 0;
+
+        position: sticky; /* This makes the header not move */
+        top: 0;
+        background: white;
+        z-index: 1000;
     }
 
     #tms {
-        font-size: 15vh;
+        font-size: 10vh;
         font-weight: bold;
     }
 
     #tms-small {
         font-size: 5vh;
-        padding-bottom: 10px;
+        padding-bottom: 0;
     }
+
     nav {
-    border: 0.2vw solid black;
     max-width: 100%;       /* or whatever width you like */
-    margin: auto;      /* center it horizontally */
+    margin: 0 auto 0 auto;      /* center it horizontally */
+
+    position: sticky; /* This makes the header not move */
+    top: 24vh;
+    background: white;
+    z-index: 1000;     
+    z-index: 999;
+
     }
+
     nav ul{
         list-style: none;
         display: flex;
         justify-content: center;
-        font-size: 3vh;
-        
+        font-size: 1.5vw;
     }
 
     nav li {
-        margin: 0 50px;
+        margin: 0 5vw 0 5vw;
     }
 
     #user_cart {
@@ -78,7 +91,16 @@
     align-items: center;
     height: 18vh; /* enough height to center vertically */
     margin-top: -5vh;
+    margin-bottom: 0;
 }
+    a , a:visited{
+        color: inherit;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+
 </style>
 <body>
     

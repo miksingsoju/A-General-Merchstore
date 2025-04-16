@@ -4,20 +4,71 @@
 {% block title %} Product List {% endblock %}
 
 {% block content %}
-<h1> Product List</h1>
+<style>
+    #productIMG {
+        max-width: 100%;
+        height: auto;
+    }
+    ul {
+        display: flex;
+        gap: 5vw;
+    }
+    li {
+        list-style: none;
+        display:flex;
+        flex-wrap: wrap;
+        max-width: 25%;
+        row-gap: 10px;
+    }
+
+    #add_cart {
+        border: 0.1vw solid black;
+        text-align: center;
+        padding: 10px 30% 10px 30%;
+        letter-spacing: 1px;
+
+    }
+    #product_price {
+        font-size: medium;
+        letter-spacing: 1.5px;
+    }
+
+    .heading {
+        text-align: center;
+        letter-spacing: 1.5px;
+        color: black;
+        border: 2px solid black;
+        padding: 8px;
+        
+    }
+</style>
+<p class="heading"> MY PRODUCTS</p>
 <ul>
-    {% for productType in productTypes%}
-        <h2> {{productType.name}} </h2>
+    {% for product in user_products %}
+        <li>
+            <img src="{{product.image.url}}" alt="{{product.name}}" id="productIMG">
+            <a href="{{product.get_absolute_url}}">{{product.name}}</a>
+            <span id="product_price">₱{{product.price}} PHP</span>
+            <div id="add_cart"> Add to cart</div>
+        </li>  
+    {% endfor %}
+</ul>
+<p class="heading"> ALL PRODUCTS</p>
+
+{% for productType in productTypes%}
+<p>{{productType.name}}</p>
         <ul>
             {% for product in products %}
             {% if productType == product.productType%}
             <li>
+                <img src="{{product.image.url}}" alt="{{product.name}}" id="productIMG">
                 <a href="{{product.get_absolute_url}}">{{product.name}}</a>
+                <span id="product_price">₱{{product.price}} PHP</span>
+                <div id="add_cart"> Add to cart</div>
             </li>  
             {% endif %}
             {% endfor %}
         </ul>
     {% endfor %}
-</ul>
 
 {% endblock %}

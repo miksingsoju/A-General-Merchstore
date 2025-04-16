@@ -7,7 +7,7 @@ from .models import *
 
 class ProductAdmin(admin.ModelAdmin):
     model = Product
-    list_display = ('name','price','stock', 'status')
+    list_display = ('name','price','stock', 'status','image')
 
 class ProductTypeAdmin(admin.ModelAdmin):
     model = ProductType
