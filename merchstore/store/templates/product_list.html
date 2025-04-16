@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Product List {% endblock %}
+
+{% block content %}
+<h1> Product List</h1>
+<ul>
+    {% for productType in productTypes%}
+        <h2> {{productType.name}} </h2>
+        <ul>
+            {% for product in products %}
+            {% if productType == product.productType%}
+            <li>
+                <a href="{{product.get_absolute_url}}">{{product.name}}</a>
+            </li>  
+            {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>
+
+{% endblock %}
