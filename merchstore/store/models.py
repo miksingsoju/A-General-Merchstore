@@ -38,9 +38,35 @@ class Product (models.Model):
         OUT_OF_STOCK = 'out_of_stock', 'Out of stock'
 
     # TODO: I might need to do something like add conditions?
-    
+
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
         default=Status.AVAILABLE,
     )
+
+class Transaction (models.Model):
+    buyer = models.ForeignKey(
+        Profile,
+        on_delete = models.SET_NULL
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete = models.SET_NULL
+    )
+    # TODO: I might need to do something like add conditions?
+
+    class Status(models.TextChoices):
+        ON_CART = 'on cart','ON CART'
+        TO_PAY = 'to pay', 'TO PAY'
+        TO_SHIP = 'to ship', 'TO SHIP'
+        TO_RECEIVE = 'to receive', 'TO RECEIVE'
+        DELIVERED = 'delivered', 'DELIVERED' 
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+    )
+
+    createdOn = models.DateTimeField(auto_now_add=True)
+
