@@ -29,12 +29,12 @@ class Product (models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=99, decimal_places=2)
     stock = models.PositiveBigIntegerField(default=0)
-    image = models.ImageField(upload_to='product_images/', null=True)
+    profile_image = models.ImageField(upload_to='product_images', blank=True, null=True)
 
     class Status(models.TextChoices):
-        AVAILABLE = 'available', 'Available'
-        ON_SALE = 'on_sale', 'On sale'
-        OUT_OF_STOCK = 'out_of_stock', 'Out of stock'
+        AVAILABLE = 'Available'
+        ON_SALE = 'On sale'
+        OUT_OF_STOCK = 'Out of stock'
 
     status = models.CharField(
         max_length=20,
@@ -47,6 +47,15 @@ class Product (models.Model):
 
     def get_absolute_url(self):
         return reverse('store:product_detail', args=[self.id])
+
+class ProductImage(models.Model):
+    image = models.ImageField(upload_to='product_images/', null=False)
+    description = models.TextField(max_length=255)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="product_image"
+    )
 
 class Transaction (models.Model):
     buyer = models.ForeignKey(
