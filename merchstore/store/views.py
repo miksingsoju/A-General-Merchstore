@@ -25,8 +25,10 @@ def product_list(request):
 
 def product_detail(request, num=1):
     product = Product.objects.get(pk=num)
+    images = ProductImage.objects.filter(product__exact=product)
     ctx = {
         'product':product,
+        'images': images
     }
     return render(request,'product_detail.html',ctx)
 
