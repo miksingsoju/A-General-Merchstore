@@ -73,8 +73,8 @@
     transform: translateY(-50%);
     }   
 
-    #login {
-        font-size: 5vh;
+    .user {
+        font-size: 4vh;
         margin: 0;
     }
 
@@ -111,7 +111,18 @@
             <div id="user_cart">        
                 <img src="{% static 'images/user.png' %}" alt="user" class="icon">
                 <img src="{% static 'images/Cart.png' %}" alt="cart" class="icon">
-                <p id="login">Login</p>
+                {% if user.is_authenticated %}
+                    <p class="user">{{user.profile.displayName}} | 
+                        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="all: unset; cursor: pointer;">
+                                Logout
+                            </button>
+                        </form></p>
+                {% else %}
+                <p class="user"><a href="{% url 'login' %}">Login</a></p>
+                {% endif %}
+
             </div>
             <p id="tms-small">the merchstore </p>
 
@@ -126,7 +137,7 @@
                 <a href="{% url 'store:product_list' %}">Home</a>
             </li>
             <li>
-                <a>Create</a> 
+                <a>My Shop</a> 
             </li>
             <li>
                 <a>My Orders</a>

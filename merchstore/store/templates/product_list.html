@@ -5,34 +5,6 @@
 
 {% block content %}
 <style>
-    #productIMG {
-        max-width: 100%;
-        height: auto;
-    }
-    ul {
-        display: flex;
-        gap: 5vw;
-    }
-    li {
-        list-style: none;
-        display:flex;
-        flex-wrap: wrap;
-        max-width: 25%;
-        row-gap: 10px;
-    }
-
-    #add_cart {
-        border: 0.1vw solid black;
-        text-align: center;
-        padding: 10px 30% 10px 30%;
-        letter-spacing: 1px;
-
-    }
-    #product_price {
-        font-size: medium;
-        letter-spacing: 1.5px;
-    }
-
     .heading {
         text-align: center;
         letter-spacing: 1.5px;
@@ -41,30 +13,71 @@
         padding: 8px;
         
     }
+    ul {
+        display: flex;
+        gap: 5vw;
+    }
+
+    .productIMG {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    li {
+        list-style: none;
+        display:flex;
+        flex-wrap: wrap;
+        max-width: 25%;
+        row-gap: 10px;
+    }
+
+    .product_price {
+        font-size: medium;
+        letter-spacing: 1.5px;
+    }
+
+    .add_cart {
+        border: 0.1vw solid black;
+        text-align: center;
+        padding: 10px 30% 10px 30%;
+        letter-spacing: 1px;
+    }
+
+    .add_cart:hover {
+        background-color: black;
+        color: white;
+    }
 </style>
+{%if user.is_authenticated %}
 <p class="heading"> MY PRODUCTS</p>
+
+{% for productType in productTypes %}
 <ul>
     {% for product in user_products %}
+    {% if productType == product.productType%}
+
         <li>
-            <img src="{{product.image.url}}" alt="{{product.name}}" id="productIMG">
+            <img src="{{product.profile_image.url}}" alt="{{product.name}}" class="productIMG">
             <a href="{{product.get_absolute_url}}">{{product.name}}</a>
-            <span id="product_price">₱{{product.price}} PHP</span>
-            <div id="add_cart"> Add to cart</div>
+            <span class="product_price">₱{{product.price}} PHP</span>
         </li>  
+    {% endif %}
     {% endfor %}
 </ul>
+{% endfor %}
+{% endif %}
+
 <p class="heading"> ALL PRODUCTS</p>
 
 {% for productType in productTypes%}
-<p>{{productType.name}}</p>
         <ul>
             {% for product in products %}
             {% if productType == product.productType%}
             <li>
-                <img src="{{product.image.url}}" alt="{{product.name}}" id="productIMG">
+                <img src="{{product.profile_image.url}}" alt="{{product.name}}" class="productIMG">
                 <a href="{{product.get_absolute_url}}">{{product.name}}</a>
-                <span id="product_price">₱{{product.price}} PHP</span>
-                <div id="add_cart"> Add to cart</div>
+                <span class="product_price">₱{{product.price}} PHP</span>
+                <div class="add_cart"> Add to cart</div>
             </li>  
             {% endif %}
             {% endfor %}
