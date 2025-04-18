@@ -11,6 +11,7 @@
         color: black;
         border: 2px solid black;
         padding: 8px;
+        margin-bottom: 5vh;
         
     }
     ul {
@@ -36,20 +37,31 @@
         letter-spacing: 1.5px;
     }
 
-    .add_cart {
+    .create_product {
+        border: 0.1vw solid black;
+        text-align: center;
+        padding: 10px 0 10px 0;
+        letter-spacing: 1px;    
+        max-width: 20%;
+        margin-bottom: 5vh;
+    }
+
+    .add_cart{
         border: 0.1vw solid black;
         text-align: center;
         padding: 10px 30% 10px 30%;
         letter-spacing: 1px;
     }
 
-    .add_cart:hover {
+    .add_cart:hover, .create_product:hover {
         background-color: black;
         color: white;
     }
 </style>
 {%if user.is_authenticated %}
 <p class="heading"> MY PRODUCTS</p>
+<div class="create_product"> Create Product</div>
+
 
 {% for productType in productTypes %}
 <ul>

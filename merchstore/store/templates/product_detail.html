@@ -17,6 +17,7 @@
     #product_info {
         display: block;
         margin-inline: 10vw;
+        min-width: 45%;
     }
 
     #price {
@@ -113,7 +114,7 @@
         <h1>{{product.name}}</h1>
         <p id="price"> ₱ {{product.price}} PHP</p>
 
-        {% if user.id == product.owner.id %}
+        {% if user == product.owner.user %}
         <div class="product_button">Edit Product</div>
 
         {% else %}
