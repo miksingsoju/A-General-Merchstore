@@ -67,7 +67,7 @@
 </style>
 {%if user.is_authenticated %}
 <p class="heading"> MY PRODUCTS</p>
-<div class="create_product"> Create Product</div>
+<a href="{% url 'store:product_create'%}"><div class="create_product"> Create Product</div></a>
 
 
 {% for productType in productTypes %}
