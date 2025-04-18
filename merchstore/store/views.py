@@ -47,9 +47,27 @@ def product_create(request):
 
     return render(request, 'product_create.html', {'form': form})
 
+@login_required
+def product_update(request,num):
+    product = Product.objects.get(id=num)
 
-def product_update(request):
-    pass
+    # Ensure that the form is being submitted via POST
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            # Automatically set the product status based on stock
+            product = form.save(commit=False)
+            if product.stock == 0:
+                product.status = 'Out of Stock'
+            else:
+                product.status = 'Available'
+            product.save()
+
+            return redirect('store:product_detail', num=product.id)
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, 'product_update.html', {'form': form})
 
 def cart(request):
     pass

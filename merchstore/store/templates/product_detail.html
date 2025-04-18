@@ -115,8 +115,8 @@
         <p id="price"> ₱ {{product.price}} PHP</p>
 
         {% if user == product.owner.user %}
-        <div class="product_button">Edit Product</div>
-
+        <a href="{% url 'store:product_update' num=product.id %}"><div class="product_button">Edit Product</div>
+        </a>
         {% else %}
         <p id="price"> Quantity </p>
 
