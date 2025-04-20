@@ -48,26 +48,42 @@ def product_create(request):
     return render(request, 'product_create.html', {'form': form})
 
 @login_required
-def product_update(request,num):
+def product_update(request, num):
     product = Product.objects.get(id=num)
 
-    # Ensure that the form is being submitted via POST
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
-        if form.is_valid():
-            # Automatically set the product status based on stock
-            product = form.save(commit=False)
-            if product.stock == 0:
-                product.status = 'Out of Stock'
-            else:
-                product.status = 'Available'
-            product.save()
+        if 'name' in request.POST:  # Product form submitted
+            form = ProductForm(request.POST, request.FILES, instance=product)
+            image_form = ProductImageForm()  # empty for re-render
 
-            return redirect('store:product_detail', num=product.id)
+            if form.is_valid():
+                product = form.save(commit=False)
+                product.owner = request.user.profile
+                product.status = 'Out of Stock' if product.stock == 0 else 'Available'
+                product.save()
+                return redirect('store:product_detail', num=product.id)
+
+        else:  # Image form submitted
+            form = ProductForm(instance=product)  # unchanged
+            image_form = ProductImageForm(request.POST, request.FILES)
+            if image_form.is_valid():
+                image = image_form.save(commit=False)
+                image.product = product
+                image.save()
+                return redirect('store:product_update', num=product.id)
     else:
         form = ProductForm(instance=product)
+        image_form = ProductImageForm()
 
-    return render(request, 'product_update.html', {'form': form})
+    existing_images = ProductImage.objects.filter(product=product)
+
+    context = {
+        'form': form,
+        'image_form': image_form,
+        'existing_images': existing_images
+    }
+
+    return render(request, 'product_update.html', context)
 
 def cart(request):
     pass
