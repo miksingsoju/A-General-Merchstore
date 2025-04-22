@@ -110,7 +110,7 @@
 
             <div id="user_cart">        
                 <img src="{% static 'images/user.png' %}" alt="user" class="icon">
-                <img src="{% static 'images/Cart.png' %}" alt="cart" class="icon">
+                <a href="{%url 'store:cart' %}"><img src="{% static 'images/Cart.png' %}" alt="cart" class="icon"></a>
                 {% if user.is_authenticated %}
                     <p class="user">{{user.profile.displayName}} | 
                         <form method="post" action="{% url 'logout' %}" style="display:inline;">
@@ -137,7 +137,7 @@
                 <a href="{% url 'store:product_list' %}">Home</a>
             </li>
             <li>
-                <a>My Shop</a> 
+                <a href="{% url 'store:transactions' %}">My Shop</a> 
             </li>
             <li>
                 <a>My Orders</a>

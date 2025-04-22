@@ -68,19 +68,18 @@ class Transaction (models.Model):
         on_delete = models.SET_NULL,
         null = True
     )
-    # TODO: I might need to do something like add conditions?
 
     class Status(models.TextChoices):
-        ON_CART = 'on cart','ON CART'
-        TO_PAY = 'to pay', 'TO PAY'
-        TO_SHIP = 'to ship', 'TO SHIP'
-        TO_RECEIVE = 'to receive', 'TO RECEIVE'
-        DELIVERED = 'delivered', 'DELIVERED' 
+        ON_CART = 'ON CART'
+        TO_PAY = 'TO PAY'
+        TO_SHIP = 'TO SHIP'
+        TO_RECEIVE = 'TO RECEIVE'
+        DELIVERED = 'DELIVERED' 
 
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
     )
-
     createdOn = models.DateTimeField(auto_now_add=True)
+    amount = models.PositiveIntegerField()
 

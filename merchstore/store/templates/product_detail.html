@@ -58,21 +58,18 @@
   padding: 10px;
 }
 
-.product_button, .product_button_buy {
+.product_button{
+    display: inline-block; /* Ensure the button behaves like a block-level element */
     border: 2px solid black;
     text-align: center;
     margin: 2vw 0 2vw 0;
-    padding: 10px;
-}
-
-.product_button_buy {
-    background-color: black;
-    color: white;
-}
-
-.product_button_buy:hover {
-    border: 3px solid black;
-
+    padding: 10px ;
+    background-color: white;  /* Make the button background white */
+    color: black;  /* Text color */
+    text-decoration: none;  /* Remove any link styling */
+    cursor: pointer; /* Show a pointer cursor */
+    width: 100%;
+    font-size: 16px; 
 }
 
 .product_button:hover {
@@ -106,54 +103,67 @@
 
 
 </style>
-
 <div id="main_product">
-    <img src="{{product.profile_image.url}}" alt="{{product.name}}" id="main_image">
+    <img src="{{ product.profile_image.url }}" alt="{{ product.name }}" id="main_image">
 
     <div id="product_info">
-        <h1>{{product.name}}</h1>
-        <p id="price"> ₱ {{product.price}} PHP</p>
+        <h1>{{ product.name }}</h1>
+        <p id="price">₱ {{ product.price }} PHP</p>
+        <p>Stock: {{ product.stock }}</p>
 
         {% if user == product.owner.user %}
-        <a href="{% url 'store:product_update' num=product.id %}"><div class="product_button">Edit Product</div>
-        </a>
+            <a href="{% url 'store:product_update' num=product.id %}">
+                <div class="product_button">Edit Product</div>
+            </a>
         {% else %}
-        <p id="price"> Quantity </p>
+            <form method="POST">
+                {% csrf_token %}
 
-        <div class="quantity-wrapper">
-            <button type="button" class="quantity-btn" onclick="changeQuantity(-1)">−</button>
-            <input type="number" name="quantity" id="quantity" value="1" min="1" class="quantity-input" />
-            <button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
-          </div>
-        
-        <div class="product_button">Add to Cart</div>
-        <div class="product_button_buy">Buy it Now</div>
+                <p id="price">Quantity</p>
+
+                <div class="quantity-wrapper">
+                    <button type="button" class="quantity-btn" onclick="changeQuantity(-1)">−</button>
+                    <!-- 🔥 IMPORTANT: use 'amount' as the name -->
+                    <input type="number" name="amount" id="quantity" value="1" min="1" max="{{ product.stock }}" class="quantity-input" />
+                    <button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                </div>
+
+                {% if product.stock > 0 %}
+                    <button type="submit" class="product_button">Buy it Now</button>
+                {% else %}
+                    <button type="submit" class="product_button" disabled style="background-color: grey; cursor: not-allowed;">
+                        Out of Stock
+                    </button>
+                {% endif %}
+
+                {{ form.non_field_errors }}
+            </form>
         {% endif %}
     </div>
 </div>
 
 <div id="more_info">
-    <div id="product_gallery"> 
+    <div id="product_gallery">
         {% if images %}
-        {% for image in images %}
-            <img src="{{image.image.url}}" alt="{{image.description}}" class="product_gallery_img">
-        {% endfor%}
+            {% for image in images %}
+                <img src="{{ image.image.url }}" alt="{{ image.description }}" class="product_gallery_img">
+            {% endfor %}
         {% endif %}
     </div>
 
-    <p id="product_description">{{product.description}}</p>
+    <p id="product_description">{{ product.description }}</p>
 </div>
 
 <script>
     function changeQuantity(amount) {
-      const input = document.getElementById("quantity");
-      let current = parseInt(input.value);
-      let newVal = current + amount;
-      if (newVal < 1) newVal = 1;
-      input.value = newVal;
+        const input = document.getElementById("quantity");
+        let current = parseInt(input.value);
+        let maxStock = parseInt(input.getAttribute("max"));
+        let newVal = current + amount;
+        if (newVal < 1) newVal = 1;
+        if (newVal > maxStock) newVal = maxStock;
+        input.value = newVal;
     }
-  </script>
-
-
+</script>
 
 {% endblock %}
